@@ -3,6 +3,7 @@ package com.test.mymall.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -76,5 +77,18 @@ public class MemberItemDao {
 		
 		return list;
 	}
-	
+	//주문삭제 
+	public void deleteMemberItem(Connection connection, int no) {
+		PreparedStatement preparedStatement = null;
+		try {
+			connection.prepareStatement("DELETE FROM member_item WHERE member_no = ?");
+			preparedStatement.setInt(1, no);
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }

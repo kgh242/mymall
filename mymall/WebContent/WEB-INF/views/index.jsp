@@ -10,7 +10,8 @@
 	<h1>Index Page</h1>
 	<c:if test="${loginMember != null}">
 	<a href = "LogoutMemberController">로그아웃</a>
-	<a href = "ModifyMemberController?id=${loginMember}">정보수정</a><br>
+	<a href = "ModifyMemberController?id=${loginMember.id}">정보수정</a><br>
+	<a href = "RemoveMemberController?id=${loginMember.no}">회원탈퇴</a>
 	<a href = "GetMemberController?id=${loginMember}">${loginMember}</a>님 반갑습니다.
 	<a href = "ModifyMemberController?id=${loginMember.id}">정보수정</a>
 	<a href = "OrderListController?memberNO=${loginMember.no}">주문목록</a>

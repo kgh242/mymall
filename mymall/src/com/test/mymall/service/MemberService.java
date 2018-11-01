@@ -44,8 +44,53 @@ public class MemberService {
 		
 	}
 	
+	//회원가입
 	public void addMember(Member member) {
+		Connection connection = null;
 		memberDao = new MemberDao();
-		memberDao.insertMember(new Member());	
+		try {
+			connection = DBHelper.getConnection();
+			memberDao.insertMember(connection, member);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			DBHelper.close(null, null, connection);
+		}
+	}
+	
+	//회원체크
+	public Member getMember(String id) {
+		Connection connection = null;
+		Member member = new Member();
+		memberDao = new MemberDao();
+		try {
+			connection = DBHelper.getConnection();
+			member = memberDao.selectMember(connection, id);
+		} 
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			DBHelper.close(null, null, connection);
+		}
+		return member;
+	}
+	
+	//회원수정
+	public void modifyMember(Member member) {
+		Connection connection = null;
+		memberDao = new MemberDao();
+		try {
+			connection = DBHelper.getConnection();
+			memberDao.modifyMember(connection, member);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			DBHelper.close(null, null, connection);
+		}
 	}
 }
