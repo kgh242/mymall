@@ -12,6 +12,12 @@
 	<a href = "LogoutMemberController">로그아웃</a>
 	<a href = "ModifyMemberController?id=${loginMember}">정보수정</a><br>
 	<a href = "GetMemberController?id=${loginMember}">${loginMember}</a>님 반갑습니다.
+	<a href = "ModifyMemberController?id=${loginMember.id}">정보수정</a>
+	<a href = "OrderListController?memberNO=${loginMember.no}">주문목록</a>
+	<a href = "ItemListController">물품목록</a><br>
+	<a href = "GetMemberController?id=${loginMember.id}">${loginMember.id}</a>님이
+	<c:if test="${loginMember.level == 0}">고객</c:if>
+	<c:if test="${loginMember.level == 1}">관리자</c:if> 권한 로그인
 	</c:if>
 	<c:if test="${loginMember == null}">
 		<a href = "LoginMemberController">로그인</a>

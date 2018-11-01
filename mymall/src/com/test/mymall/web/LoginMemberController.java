@@ -30,7 +30,6 @@ public class LoginMemberController extends HttpServlet {
 	//로그인 액션
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("LoginMemberController.doPost()");
-		boolean isLogin = false;
 		Member member = new Member();
 		memberDao = new MemberDao();
 		
@@ -38,10 +37,10 @@ public class LoginMemberController extends HttpServlet {
 		String pw = request.getParameter("pw");
 		member.setId(id);
 		member.setPw(pw);
-		isLogin = memberDao.login(member);
-		if(isLogin) {
+		member = memberDao.login(member);
+		if(member != null) {
 			HttpSession session = request.getSession();
-			session.setAttribute("loginMember", member.getId());
+			session.setAttribute("loginMember", member);
 			response.sendRedirect(request.getContextPath()+"/IndexController");
 			
 		}

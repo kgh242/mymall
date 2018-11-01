@@ -11,7 +11,10 @@
 	<h1>상품목록</h1>
 	<table border="1">
 		<tr>
-			<th>No</th><th>Name</th><th>Price</th><th>Order</th>
+			<th>No</th>
+			<th>Name</th>
+			<th>Price</th>
+			<th>Order</th>
 		</tr>
 		<c:forEach var="item" items="${itmeList}">
 			<tr>

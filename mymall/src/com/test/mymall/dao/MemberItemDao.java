@@ -15,16 +15,16 @@ public class MemberItemDao {
 	/**
 	 *  입력한 주문내역을 데이터베이스에 저장한다.
 	 * 
-	 * @param 
+	 * @param MemberItem 주문정보(member_no, item_no)
 	 */
-	public void insertMemberItem(String MemberItem) {
+	public void insertMemberItem(MemberItem MemberItem) {
 		System.out.println("MemberItemDao.insertMemberItem");
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Member member = new Member();
 		Item item = new Item();
-		String sql = "INSERT INTO member_item(member_no, item_no) VALUES(?,?)";
+		String sql = "INSERT INTO member_item(member_no, item_no, order_date) VALUES(?,?,now())";
 		try {
 			connection = DBHelper.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
@@ -51,18 +51,20 @@ public class MemberItemDao {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		MemberItem memberItem = new MemberItem();
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-		String sql = "SELECT mi.no, mi.order_date, mi.item_no, i.name, i.price FROM MemberItem mi INNER JOIN Item i on mi.item_no = i.no WHERE mi.member_no = ?";
+		String sql = "SELECT mi.no, mi.item_no, i.name, i.price, mi.order_date FROM MemberItem mi INNER JOIN Item i on mi.item_no = i.no WHERE mi.member_no = ?";
 		try {
 			connection = DBHelper.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, memberItem.getMember_no());
+			preparedStatement.setInt(1, memberNo);
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()) {
 				HashMap<String, Object> map = new HashMap<String, Object>();
-				map.put("memberItemNo", resultSet.getInt("mi.no"));
-				map.put("memberItemNo", resultSet.getInt("i.price"));
+				map.put("memberItemNo", resultSet.getInt(1));
+				map.put("itemNo", resultSet.getInt(2));
+				map.put("itemPrice", resultSet.getInt(3));
+				map.put("itemName", resultSet.getString(4));
+				map.put("orderDate", resultSet.getString(5));
 				list.add(map);
 			}
 		} catch (Exception e) {
@@ -75,7 +77,4 @@ public class MemberItemDao {
 		return list;
 	}
 	
-	public void deleteMemberItem(Connection connection, int no) {
-		PreparedStatement preparedStatement = connection.prepareStatement(""); 
-	}
 }
