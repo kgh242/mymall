@@ -74,4 +74,8 @@ public class MemberItemDao {
 		
 		return list;
 	}
+	
+	public void deleteMemberItem(Connection connection, int no) {
+		PreparedStatement preparedStatement = connection.prepareStatement(""); 
+	}
 }

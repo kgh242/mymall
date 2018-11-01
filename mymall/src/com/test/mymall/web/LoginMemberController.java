@@ -43,6 +43,7 @@ public class LoginMemberController extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("loginMember", member.getId());
 			response.sendRedirect(request.getContextPath()+"/IndexController");
+			
 		}
 		else {
 			response.sendRedirect(request.getContextPath()+"/LoginMemberController");

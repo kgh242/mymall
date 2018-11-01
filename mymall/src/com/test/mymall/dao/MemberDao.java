@@ -115,4 +115,8 @@ public class MemberDao {
 			DBHelper.close(null, preparedStatement, connection);
 		}	
 	}
+	
+	public void deleteMember(int no) {
+		
+	}
 }

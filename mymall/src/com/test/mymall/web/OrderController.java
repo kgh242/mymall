@@ -16,6 +16,7 @@ public class OrderController extends HttpServlet {
 		int itemNo = Integer.parseInt(request.getParameter("itemNo"));
 		Member member = (Member)request.getSession().getAttribute("loginMember");
 		int memberNo = member.getNo();
+		MemberItem=;
 		MemberItemDao.insertMemberItem(MemberItem);
 		response.sendRedirect(request.getContextPath()+"/OrderListController");
 	}
