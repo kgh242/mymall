@@ -18,7 +18,7 @@
 				<td>${item.no}</td><!--item.getNo()  -->
 				<td>${item.name}</td>
 				<td>${item.price}</td>
-				<td><a href="${pageContext.request.contextPath}/OrderController">주문</a></td>
+				<td><a href="${pageContext.request.contextPath}/OrderController="${item.no}">주문</a></td>
 			</tr>
 		</c:forEach>
 		<tr>

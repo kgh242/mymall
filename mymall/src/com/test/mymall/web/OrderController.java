@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.test.mymall.dao.MemberItemDao;
 import com.test.mymall.vo.Member;
 
 @WebServlet("/OrderController")
@@ -14,7 +15,8 @@ public class OrderController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int itemNo = Integer.parseInt(request.getParameter("itemNo"));
 		Member member = (Member)request.getSession().getAttribute("loginMember");
-		//int memberno = member.getNo();
-		//MemberItemDao.insertMemberItem(MemberItem)
+		int memberNo = member.getNo();
+		MemberItemDao.insertMemberItem(MemberItem);
+		response.sendRedirect(request.getContextPath()+"/OrderListController");
 	}
 }
