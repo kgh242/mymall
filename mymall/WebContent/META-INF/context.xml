@@ -1,0 +1,15 @@
+<context>
+<Resource
+    name="jdbc/mall"
+    auth="Container"
+    type="javax.sql.DataSource"
+    driverClassName="com.mysql.jdbc.Driver"
+    username="root"
+    password="java0000"
+    url="jdbc:mysql://localhost:3306/mall?useSSL=false"
+    initialSize = "50"
+    maxIdle = "300"
+    minIdle ="50"
+    maxWaitMillis = "5000"
+    />
+</context>
