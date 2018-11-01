@@ -18,7 +18,7 @@ public class ModifyMemberController extends HttpServlet {
 	//수정 폼
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("ModifyMemberController.doGet()");
-		//로그인 확인
+		//로그인 확인(세션체크)
 		HttpSession session = request.getSession();
 		if(session.getAttribute("loginMember") != null) {
 			String id = request.getParameter("id");
@@ -26,7 +26,7 @@ public class ModifyMemberController extends HttpServlet {
 			this.memberDao = new MemberDao();
 			Member member = memberDao.selectMember(id);
 			request.setAttribute("member", member);
-			//forward
+			//forward 수정창 이동
 			request.getRequestDispatcher("/WEB-INF/views/modifyMember.jsp").forward(request, response);
 		}
 		else {

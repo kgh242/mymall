@@ -33,6 +33,7 @@ public class LoginMemberController extends HttpServlet {
 		boolean isLogin = false;
 		Member member = new Member();
 		memberDao = new MemberDao();
+		
 		String id = request.getParameter("id");
 		String pw = request.getParameter("pw");
 		member.setId(id);

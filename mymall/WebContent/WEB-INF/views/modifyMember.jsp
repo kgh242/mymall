@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>멤버 수정 페이지</h1>
+<h1>수정 페이지</h1>
 	<form action="ModifyMemberController" method ="post">
 		<table border = "1">	
 			<tr>
@@ -22,12 +22,16 @@
 				<td>level</td>
 				<td>
 					<c:if test="${member.level == 0}">
-					<input type="radio" name="level" value="0" checked>고객
-					<input type="radio" name="level" value="1" >관리자
+					<select name="level">
+						<option value=0>고객</option>
+						<option value=1>관리자</option>
+					</select>
 					</c:if>
 					<c:if test="${member.level == 1}">
-					<input type="radio" name="level" value="0">고객
-					<input type="radio" name="level" value="1" checked>관리자
+					<select name="level">
+						<option value=0>고객</option>
+						<option value=1>관리자</option>
+					</select>
 					</c:if>
 				</td>
 			</tr>

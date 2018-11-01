@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.test.mymall.dao.MemberDao;
+import com.test.mymall.vo.Member;
 
 @WebServlet("/LoginController")
 public class LoginController extends HttpServlet {

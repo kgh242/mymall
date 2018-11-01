@@ -18,10 +18,12 @@ public class AddMemberController extends HttpServlet {
 	//2. 모델호출
 	//3. 뷰 렌더링
 	private MemberDao memberDao;
+	//회원가입 폼으로 이동
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("AddMemberController.doGet()");
 		request.getRequestDispatcher("WEB-INF/views/addMember.jsp").forward(request, response);
 	}
+	//회원가입폼에서 받아온 데이터를 액션(Dao에서 메서드 호출처리)
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("AddMemberController.doPost()");
 		this.memberDao = new MemberDao();

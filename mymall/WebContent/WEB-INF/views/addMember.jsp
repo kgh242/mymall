@@ -19,8 +19,10 @@
 			<tr>
 				<td>level</td>
 				<td>
-					<input type="radio" name="level" value="0" checked>고객
-					<input type="radio" name="level" value="1" >관리자
+					<select name="level">
+					<option value=0>고객</option>
+					<option value=1>관리자</option>
+					</select>
 				</td>
 			</tr>
 			<tr>

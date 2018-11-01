@@ -13,6 +13,7 @@ public class MemberDao {
 	 * 
 	 * @param Member 폼에서 입력한 멤버의 정보(id,pw,level)
 	 */
+	//회원가입을 위한 메서드
 	public int insertMember(Member member) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -35,7 +36,7 @@ public class MemberDao {
 		return rows;
 	}
 	//id와 pw값을 가지는 member객체를 이용해 로그인체크를 하는 메서드
-	//데이터베이스에서 id와pw일치시 success = true 리턴
+	//id와pw일치시 success = true 리턴
 	public boolean login(Member member) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
