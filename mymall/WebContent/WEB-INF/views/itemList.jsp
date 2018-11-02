@@ -26,25 +26,25 @@
 		</c:forEach>
 		<tr>
 			<td colspan = "4" align="center">
-				<c:if test="${currentScreen > 1}">
-					<a href="${pageContext.request.contextPath}/ItemListController?currentPage=${(currentScreen - 1) * pagePerScreen}"><<</a>
+				<c:if test="${paging.currentScreen > 1}">
+					<a href="${pageContext.request.contextPath}/ItemListController?currentPage=${(paging.currentScreen - 1) * paging.pagePerScreen}"><<</a>
 				</c:if>
-				<c:if test="${currentPage > 1}">
-					<a href="${pageContext.request.contextPath}/ItemListController?currentPage=${currentPage - 1}"><</a>
+				<c:if test="${paging.currentPage > 1}">
+					<a href="${pageContext.request.contextPath}/ItemListController?currentPage=${paging.currentPage - 1}">이전</a>
 				</c:if>
-				<c:forEach var="i" begin="${startScreenPage + 1}" end="${startScreenPage + currentScreenPage}" step="1">
-					<c:if test="${currentPage == i}">
+				<c:forEach var="i" begin="${paging.startScreenPage + 1}" end="${paging.startScreenPage + paging.currentScreenPage}" step="1">
+					<c:if test="${paging.currentPage == i}">
 						${i}
 					</c:if>
-					<c:if test="${currentPage != i}">
+					<c:if test="${paging.currentPage != i}">
 						<a href="${pageContext.request.contextPath}/ItemListController?currentPage=${i}">${i}</a>
 					</c:if>
 				</c:forEach>
-				<c:if test="${currentPage < lastPage}">
-					<a href="${pageContext.request.contextPath}/ItemListController?currentPage=${currentPage + 1}">></a>
+				<c:if test="${paging.currentPage < paging.lastPage}">
+					<a href="${pageContext.request.contextPath}/ItemListController?currentPage=${paging.currentPage + 1}">다음</a>
 				</c:if>
-				<c:if test="${currentScreen < lastScreen}">
-					<a href="${pageContext.request.contextPath}/ItemListController?currentPage=${currentScreen * pagePerScreen + 1}">>></a>
+				<c:if test="${paging.currentScreen < paging.lastScreen}">
+					<a href="${pageContext.request.contextPath}/ItemListController?currentPage=${paging.currentScreen * paging.pagePerScreen + 1}">>></a>
 				</c:if>
 			</td>
 		</tr>

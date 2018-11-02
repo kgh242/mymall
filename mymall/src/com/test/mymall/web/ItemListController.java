@@ -2,6 +2,7 @@ package com.test.mymall.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,12 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.test.mymall.dao.ItemDao;
+import com.test.mymall.service.ItemService;
 import com.test.mymall.vo.Item;
 
 @WebServlet("/ItemListController")
 public class ItemListController extends HttpServlet {
-	ItemDao itemDao;
+	ItemService itemService;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		System.out.println("ItemListController.doGet()");
 		int currentPage = 1; //현재 페이지 번호
@@ -26,11 +28,11 @@ public class ItemListController extends HttpServlet {
 		int currentScreenPage; //현재 화면에 보이는 페이지의 개수
 		int startScreenPage; //현재 화면에 보이는 페이지의 시작 번호(첫번째화면 1,두번째화면 11..)
 		int lastPage; //마지막 페이지번호
-		this.itemDao = new ItemDao();
+		itemService = new ItemService();
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
-		totalCount = this.itemDao.getTotalItemCount();
+		totalCount = itemService.getItemCount();
 		lastPage = (int)Math.ceil((double) totalCount / rowPerPage);
 		currentScreen = (int)Math.ceil((double) currentPage / rowPerPage);
 		lastScreen = (int) Math.ceil((double) totalCount / (rowPerPage * pagePerScreen));
@@ -47,7 +49,9 @@ public class ItemListController extends HttpServlet {
 		else {
 			currentScreenPage = pagePerScreen;
 		}
-		ArrayList<Item> itemList = this.itemDao.selectItemList(currentPage, rowPerPage);
+		HashMap<String, Integer> paging = new HashMap<String, Integer>();
+		ArrayList<Item> itemList = itemService.selectItem(paging);
+		request.setAttribute("paging", paging);
 		request.setAttribute("itemList", itemList);
 		request.setAttribute("lastPage", lastPage);
 		request.setAttribute("currentPage", currentPage);

@@ -16,27 +16,23 @@ public class MemberItemDao {
 	/**
 	 *  입력한 주문내역을 데이터베이스에 저장한다.
 	 * 
-	 * @param MemberItem 주문정보(member_no, item_no)
+	 * @param memberItem 주문정보(member_no, item_no)
 	 */
-	public void insertMemberItem(MemberItem MemberItem) {
+	public void insertMemberItem(Connection connection, MemberItem memberItem) {
 		System.out.println("MemberItemDao.insertMemberItem");
-		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
 		Member member = new Member();
 		Item item = new Item();
 		String sql = "INSERT INTO member_item(member_no, item_no, order_date) VALUES(?,?,now())";
 		try {
-			connection = DBHelper.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, member.getNo());
 			preparedStatement.setInt(2, item.getNo());
 			preparedStatement.executeUpdate();
+			preparedStatement.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			DBHelper.close(resultSet, preparedStatement, connection);
 		}
 	}
 	
@@ -47,15 +43,13 @@ public class MemberItemDao {
 	 * @return	조인된 주문내역(mi.no, mi.order_date, mi.item_no, i.name, i.price)
 	 */
 	//MemberItem INNER JOIN item 
-	public ArrayList<HashMap<String, Object>> getMemberItemList(int memberNo){
+	public ArrayList<HashMap<String, Object>> getMemberItemList(Connection connection, int memberNo){
 		System.out.println("MemberItemDao.getMemberItemList()");
-		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 		String sql = "SELECT mi.no, mi.item_no, i.name, i.price, mi.order_date FROM MemberItem mi INNER JOIN Item i on mi.item_no = i.no WHERE mi.member_no = ?";
 		try {
-			connection = DBHelper.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, memberNo);
 			resultSet = preparedStatement.executeQuery();
@@ -68,6 +62,8 @@ public class MemberItemDao {
 				map.put("orderDate", resultSet.getString(5));
 				list.add(map);
 			}
+			resultSet.close();
+			preparedStatement.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
