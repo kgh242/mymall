@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<environments default="development">
+		<environment id="development">
+		<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value=""/>
+				<property name="url" value=""/>
+				<property name="username" value="root"/>
+				<property name="password" value="java0000"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers> <!-- 쿼리가 모여있는 파일 -->
+		<mapper resource="classpath:com/test/mymall/dao/MemberMapper.xml"/>
+		<mapper resource="classpath:com/test/mymall/dao/ItemMapper.xml"/>
+		<mapper resource="classpath:com/test/mymall/dao/MemberItemMapper.xml"/>
+	</mappers>
+</configuration>
