@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
 
 import com.test.mymall.commons.DBHelper;
 import com.test.mymall.vo.Item;
@@ -18,24 +21,10 @@ public class MemberItemDao {
 	 * 
 	 * @param memberItem 주문정보(member_no, item_no)
 	 */
-	public void insertMemberItem(Connection connection, MemberItem memberItem) {
-		System.out.println("MemberItemDao.insertMemberItem");
-		PreparedStatement preparedStatement = null;
-		Member member = new Member();
-		Item item = new Item();
-		String sql = "INSERT INTO member_item(member_no, item_no, order_date) VALUES(?,?,now())";
-		try {
-			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, member.getNo());
-			preparedStatement.setInt(2, item.getNo());
-			preparedStatement.executeUpdate();
-			preparedStatement.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+	public void insertMemberItem(SqlSession sqlSession, MemberItem memberItem) {
+		System.out.println("Mybatis적용 주문.MemberItemDao");
+		sqlSession.insert("com.test.mymall.dao.MemberItemMapper.orderInsert", memberItem);
+	}	
 	/**
 	 * HaspMap과 조인을 이용해 주문내역에 관한 검색문을 가져온다
 	 * 
@@ -43,48 +32,13 @@ public class MemberItemDao {
 	 * @return	조인된 주문내역(mi.no, mi.order_date, mi.item_no, i.name, i.price)
 	 */
 	//MemberItem INNER JOIN item 
-	public ArrayList<HashMap<String, Object>> getMemberItemList(Connection connection, int memberNo){
-		System.out.println("MemberItemDao.getMemberItemList()");
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-		String sql = "SELECT mi.no, mi.item_no, i.name, i.price, mi.order_date FROM MemberItem mi INNER JOIN Item i on mi.item_no = i.no WHERE mi.member_no = ?";
-		try {
-			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, memberNo);
-			resultSet = preparedStatement.executeQuery();
-			while(resultSet.next()) {
-				HashMap<String, Object> map = new HashMap<String, Object>();
-				map.put("memberItemNo", resultSet.getInt(1));
-				map.put("itemNo", resultSet.getInt(2));
-				map.put("itemPrice", resultSet.getInt(3));
-				map.put("itemName", resultSet.getString(4));
-				map.put("orderDate", resultSet.getString(5));
-				list.add(map);
-			}
-			resultSet.close();
-			preparedStatement.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			DBHelper.close(resultSet, preparedStatement, connection);
-		}
-		
-		return list;
+	public List<HashMap<String, Object>> getMemberItemList(SqlSession sqlSession, int memberNo){
+		System.out.println("Mybatis적용 주문리스트.MemberItemDao");
+		return sqlSession.selectList("com.test.mymall.dao.MemberItemMapper.orderList", memberNo);
 	}
 	//주문삭제 
-	public void deleteMemberItem(Connection connection, int no) {
-		PreparedStatement preparedStatement = null;
-		try {
-			connection.prepareStatement("DELETE FROM member_item WHERE member_no = ?");
-			preparedStatement.setInt(1, no);
-			preparedStatement.executeUpdate();
-			preparedStatement.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	public void deleteMemberItem(SqlSession sqlSession, int no) {
+		System.out.println("Mybatis적용 주문취소.MemberItemDao");
+		sqlSession.delete("com.test.mymall.dao.MemberItemMapper.deleteMemberItem", no);
 	}
 }

@@ -3,11 +3,23 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.test.mymall.dao.MemberMapper">
-	<select id ="selectMemberList" resultType="com.test.mymall.vo.Member">
-		SELECT * FROM member
+	<select id="selectMemberList" parameterType = "String" resultType="com.test.mymall.vo.Member">
+		SELECT no, id, pw, level from member WHERE id = #{id}
 	</select>
 	
 	<insert id="insertMember" parameterType="com.test.mymall.vo.Member">
-		INSERT INTO member(no,id) VALUES #{no}, #{id}
+		INSERT INTO member(id,pw,level) VALUES #{id}, #{pw}, #{level}
 	</insert>
+	
+	<select id="loginMember" parameterType="com.test.mymall.vo.Member" resultType="com.test.mymall.vo.Member">
+		SELECT no,id,level FROM member WHERE id = #{id} and pw = #{pw}
+	</select>
+	
+	<update id="updateMember" parameterType="com.test.mymall.vo.Member">
+		UPDATE member SET pw = #{pw}, level = #{level} WHERE id = #{id}
+	</update>
+	
+	<delete id="deleteMember" parameterType="int">
+		DELETE FROM member WHERE no=#{no}
+	</delete>
 </mapper>

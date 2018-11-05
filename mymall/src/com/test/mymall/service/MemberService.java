@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.ibatis.session.SqlSession;
+
 import com.test.mymall.commons.DBHelper;
 import com.test.mymall.dao.MemberDao;
 import com.test.mymall.dao.MemberItemDao;
@@ -16,81 +18,92 @@ public class MemberService {
 	
 	// RemoveMemberController에서 MemberService.removeMember()호출
 	public void removeMember(int no) {
-		Connection connection = null;
-		ResultSet resultSet = null;
-		PreparedStatement preparedStatement = null;
+		SqlSession sqlSession = null;
 		try {
-			connection = DBHelper.getConnection();
-			connection.setAutoCommit(false); //자동 comit X
+			sqlSession = DBHelper.getSqlSession();
 			// 1 function
 			memberDao = new MemberDao();
-			memberDao.deleteMember(connection, no);
+			memberDao.deleteMember(sqlSession, no);
 			// 2 function
 			memberItemDao = new MemberItemDao();
-			memberItemDao.deleteMemberItem(connection, no);
-			connection.commit();
+			memberItemDao.deleteMemberItem(sqlSession, no);
+			sqlSession.commit();
 		} catch (Exception e) {
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			sqlSession.rollback();
 		} finally {
-			DBHelper.close(resultSet, preparedStatement, connection);
+			sqlSession.close();
 		}
 		
 	}
 	
 	//회원가입
 	public void addMember(Member member) {
-		Connection connection = null;
+		System.out.println("회원가입.MemberService");
+		SqlSession sqlSession = null;
 		memberDao = new MemberDao();
 		try {
-			connection = DBHelper.getConnection();
-			memberDao.insertMember(connection, member);
+			sqlSession = DBHelper.getSqlSession();
+			memberDao.insertMember(sqlSession, member);
+			sqlSession.commit();
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			sqlSession.rollback();
 		}
 		finally {
-			DBHelper.close(null, null, connection);
+			sqlSession.close();
 		}
 	}
 	
-	//회원체크
-	public Member getMember(String id) {
-		Connection connection = null;
-		Member member = new Member();
-		memberDao = new MemberDao();
+	public Member login(Member member) {
+		System.out.println("로그인.MemberService");
+		SqlSession sqlSession = null;
+		Member memberLogin = new Member();
 		try {
-			connection = DBHelper.getConnection();
-			member = memberDao.selectMember(connection, id);
-		} 
-		catch(Exception e) {
+			sqlSession = DBHelper.getSqlSession();
+			memberLogin = memberDao.login(sqlSession, member);
+		} catch(Exception e){
 			e.printStackTrace();
 		}
 		finally {
-			DBHelper.close(null, null, connection);
+			sqlSession.close();
+		}
+		return memberLogin;
+	}
+	//회원체크
+	public Member getMember(String id) {
+		System.out.println("회원체크.MemberService");
+		SqlSession sqlSession = null;
+		Member member = new Member();
+		memberDao = new MemberDao();
+		try {
+			sqlSession = DBHelper.getSqlSession();
+			member = memberDao.selectMember(sqlSession, id);
+			sqlSession.commit();
+		} 
+		catch(Exception e) {
+			sqlSession.rollback();
+		}
+		finally {
+			sqlSession.close();
 		}
 		return member;
 	}
 	
 	//회원수정
 	public void modifyMember(Member member) {
-		Connection connection = null;
+		System.out.println("회원수정.MemberService");
+		SqlSession sqlSession = null;
 		memberDao = new MemberDao();
 		try {
-			connection = DBHelper.getConnection();
-			memberDao.modifyMember(connection, member);
+			sqlSession = DBHelper.getSqlSession();
+			memberDao.modifyMember(sqlSession, member);
+			sqlSession.commit();
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			sqlSession.rollback();
 		}
 		finally {
-			DBHelper.close(null, null, connection);
+			sqlSession.close();
 		}
 	}
 }

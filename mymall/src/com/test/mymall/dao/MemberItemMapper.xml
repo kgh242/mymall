@@ -1,1 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mymall.dao.MemberItemMapper">
+	<insert id="orderInsert" parameterType="com.test.mymall.dao.MemberItem">
+		INSERT INTO member_item(member_no, item_no, order_date) VALUES(#{member_no},#{item_no},now())
+	</insert>
+	
+	<select id="orderList" parameterType="com.test.mymall.vo.Member" resultType="Hashmap">
+		SELECT mi.no, mi.item_no, i.name, i.price, mi.order_date FROM MemberItem mi INNER JOIN Item i on mi.item_no = i.no WHERE mi.member_no = #{no}
+	</select>
+	
+	<delete id="deleteMemberItem" parameterType="com.test.mymall.vo.Member">
+		DELETE FROM member_item WHERE member_no = #{no}
+	</delete>
+</mapper>

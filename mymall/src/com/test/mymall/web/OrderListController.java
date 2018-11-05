@@ -3,6 +3,7 @@ package com.test.mymall.web;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +25,7 @@ public class OrderListController extends HttpServlet {
 		if(session.getAttribute("loginMember") != null) {
 			memberItemService = new MemberItemService();
 			int memberNo = Integer.parseInt(request.getParameter("memberNo"));
-			ArrayList<HashMap<String,Object>> list = memberItemService.getOrderList(memberNo);
+			List<HashMap<String,Object>> list = memberItemService.getOrderList(memberNo);
 			request.setAttribute("memberItemList", list);
 			request.getRequestDispatcher("/WEB-INF/views/orderList.jsp").forward(request, response);
 		}

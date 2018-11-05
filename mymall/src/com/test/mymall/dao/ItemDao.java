@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
 
 import com.test.mymall.vo.Item;
 import com.test.mymall.vo.Member;
@@ -17,54 +20,17 @@ public class ItemDao {
 	 * @param currentPage 현재 보여지는 페이지의 번호
 	 * @param rowPerPage 한 페이지에 보여지는 아이템의 개수
 	 */
-	public ArrayList<Item> selectItemList(Connection connection, HashMap<String, Integer> paging) {
-		System.out.println("ItemDao.SelectItemList()");
-		ArrayList<Item> itemList = new ArrayList<Item>();
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		int currentPage = paging.get("currentPage");
-		int rowPerPage = paging.get("rowPerPage");
-		try {
-			preparedStatement = connection.prepareStatement("SELECT no, name, price FROM item LIMIT ? , ?");
-			preparedStatement.setInt(1, (currentPage - 1) * rowPerPage);
-			preparedStatement.setInt(2, rowPerPage);
-			resultSet = preparedStatement.executeQuery();
-			while(resultSet.next()) {
-				Item item = new Item();
-				item.setNo(resultSet.getInt(1));
-				item.setName(resultSet.getString(2));
-				item.setPrice(resultSet.getInt(3));
-				itemList.add(item);
-			}
-			resultSet.close();
-			preparedStatement.close();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		return itemList;
+	public List<Item> selectItemList(SqlSession sqlSession, HashMap<String, Integer> paging) {
+		System.out.println("mybatis적용 물품목록.ItemDao");
+		return sqlSession.selectList("com.test.mymall.dao.ItemMapper.paging", paging);
 	}
 	/**
 	 * 데이터베이스에서 물품의 총 개수를 얻어온다
 	 * 
 	 * @return 물품의 총 개수
 	 */
-	public int getTotalItemCount(Connection connection) {
-		int totalCount = 0;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		try {
-			preparedStatement = connection.prepareStatement("SELECT count(*) FROM item");
-			resultSet = preparedStatement.executeQuery();
-			if(resultSet.next()) {
-				totalCount = resultSet.getInt(1);
-			}
-			resultSet.close();
-			preparedStatement.close();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		return totalCount;
+	public int getTotalItemCount(SqlSession sqlSession) {
+		System.out.println("mybatis적용 물품의 총갯수.ItemDao");
+		return sqlSession.selectOne("com.test.mymall.dao.ItemMapper.itemList");
 	}
 }
